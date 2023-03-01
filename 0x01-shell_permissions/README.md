@@ -1,1 +1,1 @@
-0x01-shell_permissions
+101-symbolic_link_permissions
