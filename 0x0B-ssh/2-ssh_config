@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#file rconfiguration to be able to conect with no password
+Host School
+    Hostname 100.26.136.254
+    user ubuntu
+    IdentityFile ~/.ssh/school
+    Password Authentication No
