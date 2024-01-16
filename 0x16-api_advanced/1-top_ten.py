@@ -1,59 +1,23 @@
 #!/usr/bin/python3
-"""Script that prints out top ten hottest gists
-of a subreddit"""
-
+""" function that queries the Reddit API and prints the titles
+    of the first 10 hot posts listed for a given subreddit.
+"""
 import requests
 
 
 def top_ten(subreddit):
-    """Function that fetches top 10 gists"""
-    apiUrl = "https://reddit.com/r/{}/hot.json".format(subreddit)
-    userAgent = "Mozilla/5.0"
-    limits = 10
-
-    response = requests.get(
-        apiUrl, headers={"user-agent": userAgent}, params={"limit": limits})
-    if not response:
-        print('None')
+    """ Print the titles of 10 hot posts on a given subreddit """
+    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
+    headers = {
+        "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/bdov_)"
+    }
+    params = {
+        "limit": 10
+    }
+    response = requests.get(url, headers=headers, params=params,
+                           allow_redirects=False)
+    if response.status_code == 404:
+        print("None")
         return
-    response = response.json()
-    list_obj = response['data']['children']
-    for obj in list_obj:
-        print(obj['data']['title'])
-    return#!/usr/bin/python3
-""" Top ten """
-
-
-def top_ten(subreddit):
-    """
-    Prints the titles of the first 10 hot posts listed for a given subreddit
-    """
-    from requests import get
-
-    url = "https://www.reddit.com/r/{}/hot/.json?limit=10".format(subreddit)
-
-    headers = {'user-agent': 'my-app/0.0.1'}
-
-    r = get(url, headers=headers, allow_redirects=False)
-
-    if r.status_code != 200:
-        print(None)
-        return None
-
-    try:
-        js = r.json()
-
-    except ValueError:
-        print(None)
-        return None
-
-    try:
-
-        data = js.get("data")
-        children = data.get("children")
-        for child in children[:10]:
-            post = child.get("data")
-            print(post.get("title"))
-
-    except:
-        print(None)
+    results = response.json().get("data")
+    [print(c.get("data").get("title")) for c in results.get("children")]
